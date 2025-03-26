@@ -3,20 +3,18 @@ package com.example.demo.controller;
 import com.example.demo.controller.dto.AuthorRequestDto;
 import com.example.demo.domain.Author;
 import com.example.demo.service.AuthorService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/authors")
 public class AuthorController {
 
     private final AuthorService authorService;
-
-    public AuthorController(AuthorService authorService) {
-        this.authorService = authorService;
-    }
 
     @GetMapping
     public List<Author> getAllAuthors() {

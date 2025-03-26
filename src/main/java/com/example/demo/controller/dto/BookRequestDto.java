@@ -2,42 +2,27 @@ package com.example.demo.controller.dto;
 
 import com.example.demo.domain.Genre;
 import com.example.demo.service.dto.BookServiceDto;
+import lombok.Getter;
 
 import java.time.LocalDate;
 
+@Getter
 public class BookRequestDto {
-    private  Long authorId;
+    private Long authorId;
     private String title;
     private String subtitle;
     private Genre genre;
     private Boolean isSeries;
     private LocalDate publishedDate;
 
-    public Long getAuthorId() {
-        return authorId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public String getSubtitle() {
-        return subtitle;
-    }
-
-    public Genre getGenre() {
-        return genre;
-    }
-
-    public Boolean getIsSeries() {
-        return isSeries;
-    }
-
-    public LocalDate getPublishedDate() {
-        return publishedDate;
-    }
-
     public BookServiceDto toServiceDto() {
-        return new BookServiceDto(authorId, title, subtitle, genre, isSeries, publishedDate);
+        return BookServiceDto.builder()
+                .authorId(authorId)
+                .title(title)
+                .subtitle(subtitle)
+                .genre(genre)
+                .isSeries(isSeries)
+                .publishedDate(publishedDate)
+                .build();
     }
 }

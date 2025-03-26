@@ -4,18 +4,16 @@ package com.example.demo.service;
 import com.example.demo.domain.Author;
 import com.example.demo.repository.AuthorRepository;
 import com.example.demo.service.dto.AuthorServiceDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class AuthorService {
 
     private final AuthorRepository authorRepository;
-
-    public AuthorService(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
 
     public List<Author> getAllAuthors() {
         return authorRepository.findAll();

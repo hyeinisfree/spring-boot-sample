@@ -5,20 +5,17 @@ import com.example.demo.domain.Book;
 import com.example.demo.repository.AuthorRepository;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.dto.BookServiceDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@RequiredArgsConstructor
 @Service
 public class BookService {
 
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
-
-    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
-        this.bookRepository = bookRepository;
-        this.authorRepository = authorRepository;
-    }
 
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
