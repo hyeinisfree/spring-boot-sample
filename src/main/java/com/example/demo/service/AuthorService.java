@@ -3,6 +3,7 @@ package com.example.demo.service;
 
 import com.example.demo.common.CustomException;
 import com.example.demo.common.ErrorCode;
+import com.example.demo.controller.dto.AuthorResponseDto;
 import com.example.demo.domain.Author;
 import com.example.demo.repository.AuthorRepository;
 import com.example.demo.service.dto.AuthorServiceDto;
@@ -17,18 +18,20 @@ public class AuthorService {
 
     private final AuthorRepository authorRepository;
 
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
+    public List<AuthorResponseDto> getAllAuthors() {
+        List<Author> authors = authorRepository.findAll();
+        return authors.stream().map(AuthorResponseDto::of).toList();
     }
 
-    public Author getAuthorById(Long id) {
-        return authorRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.AUTHOR_NOT_FOUND));
+    public AuthorResponseDto getAuthorById(Long id) {
+        Author author = authorRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.AUTHOR_NOT_FOUND));
+        return AuthorResponseDto.of(author);
     }
 
-    public Author createAuthor(AuthorServiceDto serviceDto) {
+    public AuthorResponseDto createAuthor(AuthorServiceDto serviceDto) {
         Author author = serviceDto.toAuthor();
         authorRepository.save(author);
-        return author;
+        return AuthorResponseDto.of(author);
     }
 
     public void deleteAuthor(Long id) {

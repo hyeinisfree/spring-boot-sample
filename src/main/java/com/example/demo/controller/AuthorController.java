@@ -4,7 +4,7 @@ import com.example.demo.common.ApiResponse;
 import com.example.demo.common.ResponseList;
 import com.example.demo.common.ResponseResult;
 import com.example.demo.controller.dto.AuthorRequestDto;
-import com.example.demo.domain.Author;
+import com.example.demo.controller.dto.AuthorResponseDto;
 import com.example.demo.service.AuthorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,20 +18,18 @@ public class AuthorController {
     private final AuthorService authorService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<ResponseList<Author>>> getAllAuthors() {
+    public ResponseEntity<ApiResponse<ResponseList<AuthorResponseDto>>> getAllAuthors() {
         return ApiResponse.successList(authorService.getAllAuthors());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ApiResponse<Author>> getAuthorById(@PathVariable Long id) {
-        Author author = authorService.getAuthorById(id);
-        return ApiResponse.success(author);
+    public ResponseEntity<ApiResponse<AuthorResponseDto>> getAuthorById(@PathVariable Long id) {
+        return ApiResponse.success(authorService.getAuthorById(id));
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<Author>> createAuthor(@RequestBody AuthorRequestDto request) {
-        Author author = authorService.createAuthor(request.toServiceDto());
-        return ApiResponse.success(author);
+    public ResponseEntity<ApiResponse<AuthorResponseDto>> createAuthor(@RequestBody AuthorRequestDto request) {
+        return ApiResponse.success(authorService.createAuthor(request.toServiceDto()));
     }
 
     @DeleteMapping("/{id}")
