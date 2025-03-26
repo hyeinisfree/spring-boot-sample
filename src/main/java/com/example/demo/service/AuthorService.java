@@ -1,6 +1,8 @@
 package com.example.demo.service;
 
 
+import com.example.demo.common.CustomException;
+import com.example.demo.common.ErrorCode;
 import com.example.demo.domain.Author;
 import com.example.demo.repository.AuthorRepository;
 import com.example.demo.service.dto.AuthorServiceDto;
@@ -20,7 +22,7 @@ public class AuthorService {
     }
 
     public Author getAuthorById(Long id) {
-        return authorRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        return authorRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.AUTHOR_NOT_FOUND));
     }
 
     public Author createAuthor(AuthorServiceDto serviceDto) {
@@ -30,7 +32,7 @@ public class AuthorService {
     }
 
     public void deleteAuthor(Long id) {
-        Author author = authorRepository.findById(id).orElseThrow(IllegalArgumentException::new);
+        Author author = authorRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.AUTHOR_NOT_FOUND));
         authorRepository.delete(id);
     }
 }
