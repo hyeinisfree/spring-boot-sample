@@ -5,8 +5,8 @@ import com.example.demo.common.ResponseList;
 import com.example.demo.common.ResponseResult;
 import com.example.demo.controller.dto.BookRequestDto;
 import com.example.demo.controller.dto.BookResponseDto;
-import com.example.demo.domain.Book;
 import com.example.demo.service.BookService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -29,12 +29,12 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<BookResponseDto>> createBook(@RequestBody BookRequestDto request) {
+    public ResponseEntity<ApiResponse<BookResponseDto>> createBook(@RequestBody @Valid BookRequestDto request) {
         return ApiResponse.success(bookService.createBook(request.toServiceDto()));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ApiResponse<BookResponseDto>> updateBook(@PathVariable Long id, @RequestBody BookRequestDto request) {
+    public ResponseEntity<ApiResponse<BookResponseDto>> updateBook(@PathVariable Long id, @RequestBody @Valid BookRequestDto request) {
         return ApiResponse.success(bookService.updateBook(id, request.toServiceDto()));
     }
 

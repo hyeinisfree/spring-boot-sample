@@ -6,6 +6,7 @@ import com.example.demo.common.ResponseResult;
 import com.example.demo.controller.dto.AuthorRequestDto;
 import com.example.demo.controller.dto.AuthorResponseDto;
 import com.example.demo.service.AuthorService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,7 +29,7 @@ public class AuthorController {
     }
 
     @PostMapping
-    public ResponseEntity<ApiResponse<AuthorResponseDto>> createAuthor(@RequestBody AuthorRequestDto request) {
+    public ResponseEntity<ApiResponse<AuthorResponseDto>> createAuthor(@RequestBody @Valid AuthorRequestDto request) {
         return ApiResponse.success(authorService.createAuthor(request.toServiceDto()));
     }
 
