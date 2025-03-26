@@ -12,12 +12,12 @@ import java.time.LocalDate;
 @Getter
 public class BookServiceDto {
 
-    private  Long authorId;
-    private String title;
-    private String subtitle;
-    private Genre genre;
-    private Boolean isSeries;
-    private LocalDate publishedDate;
+    private final Long authorId;
+    private final String title;
+    private final String subtitle;
+    private final Genre genre;
+    private final Boolean isSeries;
+    private final LocalDate publishedDate;
 
     public Book toBook(Author author) {
         return Book.builder()
