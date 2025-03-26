@@ -2,7 +2,6 @@ package com.example.demo.common;
 
 import lombok.Builder;
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -10,98 +9,56 @@ import java.util.List;
 @Getter
 @Builder
 public class ApiResponse<T> {
-    private boolean success;
-    private int code;
+    @Builder.Default
+    private boolean success = true;
+    @Builder.Default
+    private int code = 200;
     private String message;
     private T data;
 
-    public static ResponseEntity<ApiResponse> success() {
+    public static <T> ResponseEntity<ApiResponse<T>> success(ResponseCode responseCode) {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(responseCode.getHttpStatus())
                 .body(
-                        ApiResponse.builder()
-                                .success(true)
-                                .code(200)
-                                .message("요청이 성공했습니다.")
-                                .data(null)
+                        ApiResponse.<T>builder()
+                                .code(responseCode.getCode())
+                                .message(responseCode.getMessage())
                                 .build()
                 );
     }
 
-    public static <T> ResponseEntity<ApiResponse<T>> success(T data) {
+    public static <T> ResponseEntity<ApiResponse<T>> success(ResponseCode responseCode, T data) {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(responseCode.getHttpStatus())
                 .body(
                         ApiResponse.<T>builder()
-                        .success(true)
-                        .code(200)
-                        .message("요청이 성공했습니다.")
-                        .data(data)
-                        .build()
-                );
-    }
-
-    public static <T> ResponseEntity<ApiResponse<T>> success(String message, T data) {
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body(
-                        ApiResponse.<T>builder()
-                                .success(true)
-                                .code(200)
-                                .message(message)
+                                .code(responseCode.getCode())
+                                .message(responseCode.getMessage())
                                 .data(data)
                                 .build()
                 );
     }
 
-    public static <T> ResponseEntity<ApiResponse<ResponseResult<T>>> successResult(T data) {
+    public static <T> ResponseEntity<ApiResponse<ResponseResult<T>>> successResult(ResponseCode responseCode, T data) {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(responseCode.getHttpStatus())
                 .body(
                         ApiResponse.<ResponseResult<T>>builder()
-                                .success(true)
-                                .code(200)
-                                .message("요청이 성공했습니다.")
+                                .code(responseCode.getCode())
+                                .message(responseCode.getMessage())
                                 .data(new ResponseResult<>(data))
                                 .build()
                 );
     }
 
-    public static <T> ResponseEntity<ApiResponse<ResponseList<T>>> successList(List<T> data) {
+    public static <T> ResponseEntity<ApiResponse<ResponseList<T>>> successList(ResponseCode responseCode, List<T> data) {
         return ResponseEntity
-                .status(HttpStatus.OK)
+                .status(responseCode.getHttpStatus())
                 .body(
                         ApiResponse.<ResponseList<T>>builder()
-                                .success(true)
-                                .code(200)
-                                .message("요청이 성공했습니다.")
+                                .code(responseCode.getCode())
+                                .message(responseCode.getMessage())
                                 .data(new ResponseList<>(data))
-                                .build()
-                );
-    }
-
-    public static ResponseEntity<ApiResponse> fail(ErrorCode errorCode) {
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(
-                        ApiResponse.builder()
-                                .success(false)
-                                .code(errorCode.getCode())
-                                .message(errorCode.getMessage())
-                                .data(null)
-                                .build()
-                );
-    }
-
-    public static <T> ResponseEntity<ApiResponse<T>> fail(ErrorCode errorCode, T data) {
-        return ResponseEntity
-                .status(errorCode.getHttpStatus())
-                .body(
-                        ApiResponse.<T>builder()
-                                .success(false)
-                                .code(errorCode.getCode())
-                                .message(errorCode.getMessage())
-                                .data(data)
                                 .build()
                 );
     }

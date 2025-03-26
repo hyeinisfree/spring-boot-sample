@@ -15,12 +15,12 @@ import java.util.stream.Collectors;
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomException.class)
-    public ResponseEntity<ApiResponse> handleCustomException(CustomException ex) {
-        return ApiResponse.fail(ex.getErrorCode());
+    public ResponseEntity<ApiResponseFail<Void>> handleCustomException(CustomException ex) {
+        return ApiResponseFail.fail(ex.getErrorCode());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handleValidationException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ApiResponseFail<Map<String, String>>> handleValidationException(MethodArgumentNotValidException ex) {
         Map<String, String> errors = ex.getBindingResult().getFieldErrors().stream()
                 .collect(Collectors.toMap(
                         FieldError::getField,
@@ -28,17 +28,17 @@ public class GlobalExceptionHandler {
                         (existing, replacement) -> existing
                 ));
 
-        return ApiResponse.fail(ErrorCode.INVALID_INPUT_VALUE, errors);
+        return ApiResponseFail.fail(ErrorCode.INVALID_INPUT_VALUE, errors);
     }
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<?> handleEnumTypeMismatch(HttpMessageNotReadableException ex) {
-        return ApiResponse.fail(ErrorCode.INVALID_INPUT_VALUE);
+    public ResponseEntity<ApiResponseFail<Void>> handleEnumTypeMismatch(HttpMessageNotReadableException ex) {
+        return ApiResponseFail.fail(ErrorCode.INVALID_INPUT_VALUE);
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiResponse> handleException(Exception ex) {
-        return ApiResponse.fail(ErrorCode.INTERNAL_SERVER_ERROR);
+    public ResponseEntity<ApiResponseError<Void>> handleException(Exception ex) {
+        return ApiResponseError.error(ErrorCode.INTERNAL_SERVER_ERROR);
     }
 
 }

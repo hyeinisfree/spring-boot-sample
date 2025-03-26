@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 import com.example.demo.common.ApiResponse;
+import com.example.demo.common.ResponseCode;
 import com.example.demo.common.ResponseList;
 import com.example.demo.common.ResponseResult;
 import com.example.demo.controller.dto.AuthorRequestDto;
@@ -20,22 +21,22 @@ public class AuthorController {
 
     @GetMapping
     public ResponseEntity<ApiResponse<ResponseList<AuthorResponseDto>>> getAllAuthors() {
-        return ApiResponse.successList(authorService.getAllAuthors());
+        return ApiResponse.successList(ResponseCode.OK, authorService.getAllAuthors());
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<ApiResponse<AuthorResponseDto>> getAuthorById(@PathVariable Long id) {
-        return ApiResponse.success(authorService.getAuthorById(id));
+        return ApiResponse.success(ResponseCode.OK, authorService.getAuthorById(id));
     }
 
     @PostMapping
     public ResponseEntity<ApiResponse<AuthorResponseDto>> createAuthor(@RequestBody @Valid AuthorRequestDto request) {
-        return ApiResponse.success(authorService.createAuthor(request.toServiceDto()));
+        return ApiResponse.success(ResponseCode.CREATED, authorService.createAuthor(request.toServiceDto()));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ApiResponse<ResponseResult<Boolean>>> deleteAuthor(@PathVariable Long id) {
         authorService.deleteAuthor(id);
-        return ApiResponse.successResult(true);
+        return ApiResponse.successResult(ResponseCode.OK, true);
     }
 }
