@@ -1,7 +1,7 @@
 package com.example.demo.service;
 
 
-import com.example.demo.common.CustomException;
+import com.example.demo.common.exception.CustomException;
 import com.example.demo.common.ErrorCode;
 import com.example.demo.controller.dto.AuthorResponseDto;
 import com.example.demo.domain.Author;
