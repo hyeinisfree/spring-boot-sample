@@ -6,6 +6,8 @@ import com.example.demo.repository.AuthorRepository;
 import com.example.demo.repository.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.util.ConcurrentModificationException;
 import java.util.UUID;
@@ -15,10 +17,13 @@ import java.util.concurrent.Executors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@SpringBootTest
 public class BookRepositoryConcurrencyTest {
 
+    @Autowired
     private BookRepository bookRepository;
 
+    @Autowired
     private AuthorRepository authorRepository;
 
     Author author = Author.builder()
@@ -29,8 +34,9 @@ public class BookRepositoryConcurrencyTest {
 
     @BeforeEach
     void setUp() {
-        bookRepository = new BookRepository();
-        authorRepository = new AuthorRepository();
+        bookRepository.deleteAll();
+        authorRepository.deleteAll();
+
         authorRepository.save(author);
     }
 
@@ -108,7 +114,7 @@ public class BookRepositoryConcurrencyTest {
             final long idToDelete = i;
             executor.submit(() -> {
                 try {
-                    bookRepository.delete(idToDelete);
+                    bookRepository.deleteById(idToDelete);
                 } finally {
                     latch.countDown();
                 }
@@ -198,7 +204,7 @@ public class BookRepositoryConcurrencyTest {
         executor.submit(() -> {
             try {
                 Thread.sleep(5); // 순회 중간에 삭제
-                bookRepository.delete(1L);
+                bookRepository.deleteById(1L);
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             } finally {

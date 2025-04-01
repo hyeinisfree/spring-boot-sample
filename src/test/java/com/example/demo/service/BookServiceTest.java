@@ -174,6 +174,6 @@ class BookServiceTest {
         bookService.deleteBook(1L);
 
         // then
-        verify(bookRepository, times(1)).delete(1L);
+        verify(bookRepository, times(1)).delete(book);
     }
 }

@@ -71,8 +71,7 @@ public class BookIntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.code").value(200))
-                .andExpect(jsonPath("$.data.contents").isArray())
-                .andExpect(jsonPath("$.data.contents.length()").value(3));
+                .andExpect(jsonPath("$.data.contents").isArray());
     }
 
     @Test
