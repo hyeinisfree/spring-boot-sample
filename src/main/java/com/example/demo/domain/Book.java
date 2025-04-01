@@ -16,7 +16,8 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private Author author;
 
     private String title;
@@ -33,4 +34,9 @@ public class Book {
         this.isSeries = isSeries;
         this.publishedDate = publishedDate;
     }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
 }
