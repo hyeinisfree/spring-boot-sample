@@ -29,9 +29,8 @@ public class AuthorService {
     }
 
     public AuthorResponseDto createAuthor(AuthorServiceDto serviceDto) {
-        Author author = serviceDto.toAuthor();
-        authorRepository.save(author);
-        return AuthorResponseDto.of(author);
+        Author savedAuthor = authorRepository.save(serviceDto.toAuthor());
+        return AuthorResponseDto.of(savedAuthor);
     }
 
     public void deleteAuthor(Long id) {

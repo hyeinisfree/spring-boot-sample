@@ -33,9 +33,8 @@ public class BookService {
 
     public BookResponseDto createBook(BookServiceDto serviceDto) {
         Author author = authorRepository.findById(serviceDto.getAuthorId()).orElseThrow(() -> new CustomException(ErrorCode.AUTHOR_NOT_FOUND));
-        Book book = serviceDto.toBook(author);
-        bookRepository.save(book);
-        return BookResponseDto.of(book);
+        Book savedBook = bookRepository.save(serviceDto.toBook(author));
+        return BookResponseDto.of(savedBook);
     }
 
     public BookResponseDto updateBook(Long id, BookServiceDto serviceDto) {

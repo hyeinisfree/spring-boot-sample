@@ -21,9 +21,10 @@ public class AuthorRepository {
         return authors.stream().filter(author -> author.getId().equals(id)).findFirst();
     }
 
-    public void save(Author author) {
+    public Author save(Author author) {
         author.setId(id++);
         authors.add(author);
+        return author;
     }
 
     public void delete(Long id) {

@@ -21,9 +21,10 @@ public class BookRepository {
         return books.stream().filter(book -> book.getId().equals(id)).findFirst();
     }
 
-    public void save(Book book) {
+    public Book save(Book book) {
         book.setId(id++);
         books.add(book);
+        return book;
     }
 
     public void delete(Long id) {
