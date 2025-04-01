@@ -35,6 +35,6 @@ public class AuthorService {
 
     public void deleteAuthor(Long id) {
         Author author = authorRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.AUTHOR_NOT_FOUND));
-        authorRepository.delete(id);
+        authorRepository.delete(author);
     }
 }
