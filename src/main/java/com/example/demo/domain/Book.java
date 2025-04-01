@@ -10,7 +10,7 @@ import java.time.LocalDate;
 @Getter
 public class Book {
     @Setter
-    private Long id = 1L;
+    private Long id;
     private Author author;
     private String title;
     private String subtitle;
