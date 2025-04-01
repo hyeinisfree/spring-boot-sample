@@ -4,11 +4,13 @@ import com.example.demo.domain.Genre;
 import com.example.demo.service.dto.BookServiceDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDate;
 
 @Getter
+@Builder
 public class BookRequestDto {
     private Long authorId;
 
