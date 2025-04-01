@@ -9,8 +9,8 @@ import lombok.Getter;
 
 import java.time.LocalDate;
 
-@Getter
 @Builder
+@Getter
 public class BookRequestDto {
     private Long authorId;
 

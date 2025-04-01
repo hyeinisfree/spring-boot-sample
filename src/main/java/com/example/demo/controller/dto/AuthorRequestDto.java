@@ -3,8 +3,10 @@ package com.example.demo.controller.dto;
 import com.example.demo.service.dto.AuthorServiceDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
+import lombok.Builder;
 import lombok.Getter;
 
+@Builder
 @Getter
 public class AuthorRequestDto {
 
