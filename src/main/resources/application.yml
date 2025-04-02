@@ -10,3 +10,5 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+  jackson:
+    time-zone: Asia/Seoul
