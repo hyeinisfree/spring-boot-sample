@@ -3,7 +3,7 @@ package com.example.demo;
 import com.example.demo.common.ApiResponse;
 import com.example.demo.controller.dto.AuthorRequestDto;
 import com.example.demo.controller.dto.AuthorResponseDto;
-import com.example.demo.controller.dto.BookRequestDto;
+import com.example.demo.controller.dto.BookCreateRequestDto;
 import com.example.demo.controller.dto.BookResponseDto;
 import com.example.demo.domain.Genre;
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -53,7 +53,7 @@ public class BookIntegrationTest {
         Long authorId = authorResponseDto.getData().getId();
 
         for (int i = 1; i <= 3; i++) {
-            BookRequestDto bookRequestDto = BookRequestDto.builder()
+            BookCreateRequestDto bookRequestDto = BookCreateRequestDto.builder()
                     .authorId(authorId)
                     .title("테스트 책 " + i)
                     .subtitle("부제 " + i)
@@ -94,7 +94,7 @@ public class BookIntegrationTest {
         );
         Long authorId = authorResponseDto.getData().getId();
 
-        BookRequestDto bookRequestDto = BookRequestDto.builder()
+        BookCreateRequestDto bookRequestDto = BookCreateRequestDto.builder()
                 .authorId(authorId)
                 .title("조회 테스트 책")
                 .subtitle("부제")
@@ -139,7 +139,7 @@ public class BookIntegrationTest {
         );
         Long authorId = authorResponseDto.getData().getId();
 
-        BookRequestDto bookRequestDto = BookRequestDto.builder()
+        BookCreateRequestDto bookRequestDto = BookCreateRequestDto.builder()
                 .authorId(authorId)
                 .title("통합 테스트 책")
                 .subtitle("부제")
@@ -158,7 +158,7 @@ public class BookIntegrationTest {
 
     @Test
     void 책_등록_검증_실패() throws Exception {
-        BookRequestDto bookRequestDto = BookRequestDto.builder()
+        BookCreateRequestDto bookRequestDto = BookCreateRequestDto.builder()
                 .authorId(1L)
                 .title(null)
                 .subtitle("부제")
@@ -196,7 +196,7 @@ public class BookIntegrationTest {
         );
         Long authorId = authorResponseDto.getData().getId();
 
-        BookRequestDto bookRequestDto = BookRequestDto.builder()
+        BookCreateRequestDto bookRequestDto = BookCreateRequestDto.builder()
                 .authorId(authorId)
                 .title("삭제 테스트 책")
                 .subtitle("부제")

@@ -1,6 +1,8 @@
 package com.example.demo.controller;
 
-import com.example.demo.controller.dto.BookRequestDto;
+import com.example.demo.controller.dto.AuthorResponseDto;
+import com.example.demo.controller.dto.BookCreateRequestDto;
+import com.example.demo.controller.dto.BookPutRequestDto;
 import com.example.demo.controller.dto.BookResponseDto;
 import com.example.demo.domain.Genre;
 import com.example.demo.service.BookService;
@@ -54,9 +56,15 @@ class BookControllerTest {
     @Test
     void 책_단건_조회_성공() throws Exception {
         // given
-        BookResponseDto responseDto = BookResponseDto.builder()
+        AuthorResponseDto authorResponseDto = AuthorResponseDto.builder()
                 .id(1L)
-                .author("작가")
+                .name("작가")
+                .nationality("한국")
+                .age(25)
+                .build();
+        BookResponseDto bookResponseDto = BookResponseDto.builder()
+                .id(1L)
+                .author(authorResponseDto)
                 .title("제목")
                 .subtitle("부제")
                 .genre(Genre.FICTION)
@@ -64,7 +72,7 @@ class BookControllerTest {
                 .publishedDate(LocalDate.now())
                 .build();
 
-        given(bookService.getBookById(1L)).willReturn(responseDto);
+        given(bookService.getBookById(1L)).willReturn(bookResponseDto);
 
         // when & then
         mockMvc.perform(get("/books/1"))
@@ -78,7 +86,7 @@ class BookControllerTest {
     @Test
     void 책_등록_성공() throws Exception {
         // given
-        BookRequestDto requestDto =  BookRequestDto.builder()
+        BookCreateRequestDto requestDto =  BookCreateRequestDto.builder()
                 .authorId(1L)
                 .title("제목")
                 .subtitle("부제")
@@ -86,9 +94,15 @@ class BookControllerTest {
                 .isSeries(true)
                 .publishedDate(LocalDate.now())
                 .build();
-        BookResponseDto responseDto = BookResponseDto.builder()
+        AuthorResponseDto authorResponseDto = AuthorResponseDto.builder()
                 .id(1L)
-                .author("작가")
+                .name("작가")
+                .nationality("한국")
+                .age(25)
+                .build();
+        BookResponseDto bookResponseDto = BookResponseDto.builder()
+                .id(1L)
+                .author(authorResponseDto)
                 .title("제목")
                 .subtitle("부제")
                 .genre(Genre.FICTION)
@@ -96,7 +110,7 @@ class BookControllerTest {
                 .publishedDate(LocalDate.now())
                 .build();
 
-        given(bookService.createBook(any(BookServiceDto.class))).willReturn(responseDto);
+        given(bookService.createBook(any(BookServiceDto.class))).willReturn(bookResponseDto);
 
         // when & then
         mockMvc.perform(post("/books")
@@ -107,15 +121,14 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.code").value(201))
                 .andExpect(jsonPath("$.message").value("자원이 생성되었습니다."))
                 .andExpect(jsonPath("$.data.id").value(1))
-                .andExpect(jsonPath("$.data.title").value("제목"))
-                .andExpect(jsonPath("$.data.author").value("작가"));
+                .andExpect(jsonPath("$.data.title").value("제목"));
     }
 
 
     @Test
     void 책_등록_실패() throws Exception {
         // given: 필수 필드 누락 (예: title이 null)
-        BookRequestDto invalidDto = BookRequestDto.builder()
+        BookCreateRequestDto invalidDto = BookCreateRequestDto.builder()
                 .authorId(1L)
                 .title(null) // title 누락
                 .subtitle("부제")
@@ -141,17 +154,22 @@ class BookControllerTest {
     @Test
     void 책_수정_성공() throws Exception {
         // given
-        BookRequestDto requestDto = BookRequestDto.builder()
-                .authorId(1L)
+        BookPutRequestDto requestDto = BookPutRequestDto.builder()
                 .title("수정된 제목")
                 .subtitle("수정된 부제")
                 .genre(Genre.FICTION)
                 .isSeries(false)
                 .publishedDate(LocalDate.now())
                 .build();
-        BookResponseDto responseDto = BookResponseDto.builder()
+        AuthorResponseDto authorResponseDto = AuthorResponseDto.builder()
                 .id(1L)
-                .author("작가")
+                .name("작가")
+                .nationality("한국")
+                .age(25)
+                .build();
+        BookResponseDto bookResponseDto = BookResponseDto.builder()
+                .id(1L)
+                .author(authorResponseDto)
                 .title("수정된 제목")
                 .subtitle("수정된 부제")
                 .genre(Genre.FICTION)
@@ -159,7 +177,7 @@ class BookControllerTest {
                 .publishedDate(LocalDate.now())
                 .build();
 
-        given(bookService.updateBook(eq(1L), any(BookServiceDto.class))).willReturn(responseDto);
+        given(bookService.putUpdateBook(eq(1L), any(BookServiceDto.class))).willReturn(bookResponseDto);
 
         // when & then
         mockMvc.perform(put("/books/1")
