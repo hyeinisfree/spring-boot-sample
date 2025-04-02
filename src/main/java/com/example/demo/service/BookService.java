@@ -41,10 +41,16 @@ public class BookService {
     }
 
     @Transactional
-    public BookResponseDto updateBook(Long id, BookServiceDto serviceDto) {
-        Author author = authorRepository.findById(serviceDto.getAuthorId()).orElseThrow(() -> new CustomException(ErrorCode.AUTHOR_NOT_FOUND));
+    public BookResponseDto putUpdateBook(Long id, BookServiceDto serviceDto) {
         Book book = bookRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
-        book.updateBook(author, serviceDto.getTitle(), serviceDto.getSubtitle(), serviceDto.getGenre(), serviceDto.getIsSeries(), serviceDto.getPublishedDate());
+        book.putUpdateBook(serviceDto.getTitle(), serviceDto.getSubtitle(), serviceDto.getGenre(), serviceDto.getIsSeries(), serviceDto.getPublishedDate());
+        return BookResponseDto.of(book);
+    }
+
+    @Transactional
+    public BookResponseDto patchUpdateBook(Long id, BookServiceDto serviceDto) {
+        Book book = bookRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.BOOK_NOT_FOUND));
+        book.patchUpdateBook(serviceDto.getTitle(), serviceDto.getSubtitle(), serviceDto.getGenre(), serviceDto.getIsSeries(), serviceDto.getPublishedDate());
         return BookResponseDto.of(book);
     }
 
