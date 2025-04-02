@@ -2,7 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.common.ApiResponse;
 import com.example.demo.common.ResponseCode;
-import com.example.demo.common.ResponseList;
+import com.example.demo.common.ResponsePage;
 import com.example.demo.common.ResponseResult;
 import com.example.demo.controller.dto.BookCreateRequestDto;
 import com.example.demo.controller.dto.BookPatchRequestDto;
@@ -11,6 +11,9 @@ import com.example.demo.controller.dto.BookResponseDto;
 import com.example.demo.service.BookService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,8 +25,10 @@ public class BookController {
     private final BookService bookService;
 
     @GetMapping
-    public ResponseEntity<ApiResponse<ResponseList<BookResponseDto>>> getAllBooks() {
-        return ApiResponse.successList(ResponseCode.OK, bookService.getAllBooks());
+    public ResponseEntity<ApiResponse<ResponsePage<BookResponseDto>>> getAllBooks(
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable
+    ) {
+        return ApiResponse.successPage(ResponseCode.OK, bookService.getAllBooks(pageable));
     }
 
     @GetMapping("/{id}")

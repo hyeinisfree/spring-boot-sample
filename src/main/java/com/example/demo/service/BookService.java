@@ -9,11 +9,10 @@ import com.example.demo.repository.AuthorRepository;
 import com.example.demo.repository.BookRepository;
 import com.example.demo.service.dto.BookServiceDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -23,9 +22,8 @@ public class BookService {
     private final BookRepository bookRepository;
     private final AuthorRepository authorRepository;
 
-    public List<BookResponseDto> getAllBooks() {
-        List<Book> books = bookRepository.findAll();
-        return books.stream().map(BookResponseDto::of).collect(Collectors.toList());
+    public Page<BookResponseDto> getAllBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable).map(BookResponseDto::of);
     }
 
     public BookResponseDto getBookById(Long id) {
