@@ -2,6 +2,7 @@ package com.example.demo.common;
 
 import lombok.Builder;
 import lombok.Getter;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -59,6 +60,18 @@ public class ApiResponse<T> {
                                 .code(responseCode.getCode())
                                 .message(responseCode.getMessage())
                                 .data(new ResponseList<>(data))
+                                .build()
+                );
+    }
+
+    public static <T> ResponseEntity<ApiResponse<ResponsePage<T>>> successPage(ResponseCode responseCode, Page<T> data) {
+        return ResponseEntity
+                .status(responseCode.getHttpStatus())
+                .body(
+                        ApiResponse.<ResponsePage<T>>builder()
+                                .code(responseCode.getCode())
+                                .message(responseCode.getMessage())
+                                .data(ResponsePage.of(data))
                                 .build()
                 );
     }
