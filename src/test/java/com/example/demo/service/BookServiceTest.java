@@ -13,6 +13,10 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -65,13 +69,14 @@ class BookServiceTest {
                         .publishedDate(LocalDate.now())
                         .build()
         );
-        given(bookRepository.findAll()).willReturn(books);
+        Page<Book> bookPage = new PageImpl<>(books, PageRequest.of(0, 10), 2L);
+        given(bookRepository.findAll(any(Pageable.class))).willReturn(bookPage);
 
         // when
-        List<BookResponseDto> result = bookService.getAllBooks();
+        Page<BookResponseDto> result = bookService.getAllBooks(Pageable.ofSize(10));
 
         // then
-        assertEquals(2, result.size());
+        assertEquals(2, result.getTotalElements());
     }
 
     @Test

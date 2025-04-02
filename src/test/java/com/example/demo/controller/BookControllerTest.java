@@ -13,6 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -42,7 +46,34 @@ class BookControllerTest {
     @Test
     void 책_전체_조회_성공() throws Exception {
         // given
-        given(bookService.getAllBooks()).willReturn(List.of());
+        AuthorResponseDto authorResponseDto = AuthorResponseDto.builder()
+                .id(1L)
+                .name("작가")
+                .nationality("한국")
+                .age(25)
+                .build();
+        List<BookResponseDto> bookResponseDtoList = List.of(
+                BookResponseDto.builder()
+                        .id(1L)
+                        .author(authorResponseDto)
+                        .title("제목1")
+                        .subtitle("부제1")
+                        .genre(Genre.FICTION)
+                        .isSeries(true)
+                        .publishedDate(LocalDate.now())
+                        .build(),
+                BookResponseDto.builder()
+                        .id(2L)
+                        .author(authorResponseDto)
+                        .title("제목2")
+                        .subtitle("부제2")
+                        .genre(Genre.FICTION)
+                        .isSeries(true)
+                        .publishedDate(LocalDate.now())
+                        .build()
+        );
+        Page<BookResponseDto> bookResponseDtoPage = new PageImpl<>(bookResponseDtoList, PageRequest.of(0, 10), 2L);
+        given(bookService.getAllBooks(any(Pageable.class))).willReturn(bookResponseDtoPage);
 
         // when & then
         mockMvc.perform(get("/books"))
@@ -50,7 +81,7 @@ class BookControllerTest {
                 .andExpect(jsonPath("$.success").value(true))
                 .andExpect(jsonPath("$.code").value(200))
                 .andExpect(jsonPath("$.message").exists())
-                .andExpect(jsonPath("$.data.contents").isArray());
+                .andExpect(jsonPath("$.data.content").isArray());
     }
 
     @Test
